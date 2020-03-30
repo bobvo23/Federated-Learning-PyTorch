@@ -166,7 +166,7 @@ def cifar_noniid(dataset, num_users):
     :param num_users:
     :return:
     """
-    num_shards = 10
+    num_shards = 20 # 20 * 250
     num_imgs = int(len(dataset) / num_users)
     idx_shard = [i for i in range(num_shards)]
     dict_users = {i: np.array([]) for i in range(num_users)}
@@ -181,7 +181,7 @@ def cifar_noniid(dataset, num_users):
 
     # divide and assign
     for i in range(num_users):
-        rand_set = set(np.random.choice(idx_shard, 1, replace=False))
+        rand_set = set(np.random.choice(idx_shard, 2, replace=False))
         idx_shard = list(set(idx_shard) - rand_set)
         for rand in rand_set:
             dict_users[i] = np.concatenate(

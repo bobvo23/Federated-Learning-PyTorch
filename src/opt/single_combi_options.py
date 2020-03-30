@@ -20,7 +20,7 @@ def args_parser():
                         help='the fraction of clients: C')
     parser.add_argument('--local_ep', type=int, default=5,
                         help="the number of local epochs: E")
-    parser.add_argument('--local_bs', type=int, default=50,
+    parser.add_argument('--local_bs', type=int, default=16,
                         help="local batch size: B")
     parser.add_argument('--train-batch', type=int, default=32,
                         help="single model train batch size: B")
