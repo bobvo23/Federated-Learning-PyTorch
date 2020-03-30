@@ -78,7 +78,7 @@ class LocalUpdate(object):
             for batch_idx, (images, labels) in enumerate(self.trainloader):
                 images, labels = images.to(self.device), labels.to(self.device)
 
-                model.zero_grad()
+                optimizer.zero_grad()
                 #log_probs = model(images)
                 outputs = model(images)
                 #log_probs = F.log_softmax(outputs, dim=1)
@@ -91,7 +91,7 @@ class LocalUpdate(object):
                         global_round, iter, batch_idx * len(images),
                         len(self.trainloader.dataset),
                         100. * batch_idx / len(self.trainloader), loss.item(), self.args.lr))
-                self.logger.add_scalar('loss', loss.item())
+                #self.logger.add_scalar('loss', loss.item())
                 batch_loss.append(loss.item())
             epoch_loss.append(sum(batch_loss)/len(batch_loss))
 
@@ -157,7 +157,7 @@ class LocalUpdate_combi(LocalUpdate):
                         global_round, iter, batch_idx * len(images),
                         len(self.trainloader.dataset),
                         100. * batch_idx / len(self.trainloader), loss.item(), self.args.lr))
-                self.logger.add_scalar('loss', loss.item())
+                #self.logger.add_scalar('loss', loss.item())
                 batch_loss.append(loss.item())
             epoch_loss.append(sum(batch_loss)/len(batch_loss))
 
@@ -286,7 +286,7 @@ class LocalUpdate_combi_tc(LocalUpdate):
                         global_round, iter, batch_idx * len(images),
                         len(self.trainloader.dataset),
                         100. * batch_idx / len(self.trainloader), loss.item(), self.args.lr))
-                self.logger.add_scalar('loss', loss.item())
+                #self.logger.add_scalar('loss', loss.item())
                 batch_loss.append(loss.item())
             epoch_loss.append(sum(batch_loss)/len(batch_loss))
 

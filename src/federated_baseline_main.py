@@ -22,6 +22,7 @@ from update import LocalUpdate, test_inference
 from models import MLP, CNNMnist, CNNFashion_Mnist, CNNCifar
 from utils import get_dataset, average_weights, exp_details
 from configs import config as cf
+from logger import Logger
 
 args = args_parser()
 wandb.init(project='federated_combinatorial')
@@ -53,9 +54,13 @@ def main():
         mkdir_p(model_path)
     if not os.path.isdir(os.path.join(model_path, 'logs')):
         mkdir_p(os.path.join(model_path, 'logs'))
-    logger = SummaryWriter(os.path.join(model_path, 'logs'))
+    #logger = SummaryWriter(os.path.join(model_path, 'logs'))
+    # Open logger
+    logger_path = os.path.join(model_path, 'log.txt')
+    logger = Logger(logger_path)
+    logger.set_names(['Learning Rate', 'Train Loss', 'Test Acc.'])
 
-    args.lr = cf.lr[args.dataset]
+    #args.lr = cf.lr[args.dataset]
     args.local_bs = cf.train_batch[args.dataset]
 
     wandb.config.update(args, allow_val_change=True)
@@ -78,6 +83,7 @@ def main():
         elif args.dataset == 'cub200':
             if args.net_type == 'resnet':
                 global_model = models.resnet50(pretrained=True)
+                global_model.fc = torch.nn.Linear(global_model.fc.in_features, cf.num_classes[args.dataset])
 
     elif args.model == 'mlp':
         # Multi-layer preceptron
@@ -186,6 +192,8 @@ def main():
         if best_acc >= args.target_acc:
             print('Total Global round: ', epoch+1)
             break
+
+        logger.append([args.lr, loss_avg, test_acc])
 
     # Test inference after completion of training
     test_acc, test_loss = test_inference(args, global_model, test_dataset)

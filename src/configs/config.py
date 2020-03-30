@@ -40,7 +40,7 @@ imresize = {
 }
 
 momentum = {
-    'cifar10': 0.90,
+    'cifar10': 0.50,
     'cub200': 0.9,
 }
 
@@ -50,11 +50,11 @@ train_batch = {
 }
 
 lr = {
-    'cifar10': 0.15,
+    'cifar10': 0.1,
     'cub200': 0.01
 }
 
 weight_decay = {
-    'cifar10': 5e-4,
+    'cifar10': 1e-4,
     'cub200': 5e-4
 }
