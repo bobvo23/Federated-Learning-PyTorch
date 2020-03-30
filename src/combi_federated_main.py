@@ -51,6 +51,7 @@ args.partitionings_path = '../data/%s_partitions/part_%d_kmeans.pth.tar' % \
 
 #args.lr = cf.lr[args.dataset]
 args.local_bs = cf.train_batch[args.dataset]
+args.wd = cf.weight_decay[args.dataset]
 wandb.config.update(args, allow_val_change=True)
 
 def main():

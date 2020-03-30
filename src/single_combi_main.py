@@ -27,6 +27,7 @@ args = args_parser()
 #    torch.cuda.set_device(args.gpu)
 
 
+args.wd = cf.weight_decay[args.dataset]
 
 wandb.init(project='federated_combinatorial')
 wandb.config.update(args, allow_val_change=True)

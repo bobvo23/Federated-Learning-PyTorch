@@ -28,6 +28,7 @@ args = args_parser()
 
 
 wandb.init(project='federated_combinatorial')
+args.wd = cf.weight_decay[args.dataset]
 wandb.config.update(args, allow_val_change=True)
 
 os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu

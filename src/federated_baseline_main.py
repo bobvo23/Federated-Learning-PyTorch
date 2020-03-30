@@ -62,6 +62,8 @@ def main():
 
     #args.lr = cf.lr[args.dataset]
     args.local_bs = cf.train_batch[args.dataset]
+    args.wd = cf.weight_decay[args.dataset]
+    args.momentum = cf.momentum[args.dataset]
 
     wandb.config.update(args, allow_val_change=True)
 
