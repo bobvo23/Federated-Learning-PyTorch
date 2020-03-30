@@ -92,10 +92,9 @@ def main():
 
     trainloader = DataLoader(train_dataset, batch_size=int(args.local_bs * (args.num_users * args.frac)), shuffle=True, num_workers=args.workers,
                              pin_memory=use_cuda, drop_last=True)
-    if args.dataset == 'cub200':
-        criterion = torch.nn.CrossEntropyLoss().to(device)
-    else:
-        criterion = torch.nn.NLLLoss().to(device)
+
+    criterion = torch.nn.CrossEntropyLoss().to(device)
+
     epoch_loss = []
     test_acc_lst = []
     best_acc = 0
