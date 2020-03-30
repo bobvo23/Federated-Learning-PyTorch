@@ -21,7 +21,7 @@ from tqdm import tqdm
 from tensorboardX import SummaryWriter
 
 
-from options.fed_combi_options import args_parser
+from opt.fed_combi_options import args_parser
 from update import LocalUpdate_combi, test_inference, LocalUpdate_combi_tc
 from models import MLP, CNNMnist, CNNFashion_Mnist, CNNCifar_combi, CNNCifar, CNNComb
 from utils import get_dataset, exp_details, split_weights, average_weights_split, average_weights

@@ -17,7 +17,7 @@ import numpy as np
 from tensorboardX import SummaryWriter
 
 from utils import get_dataset, adjust_learning_rate
-from options.single_combi_options import args_parser
+from opt.single_combi_options import args_parser
 from update import test_inference
 from models import MLP, CNNMnist, CNNFashion_Mnist, CNNCifar, CNNComb
 import configs.config as cf

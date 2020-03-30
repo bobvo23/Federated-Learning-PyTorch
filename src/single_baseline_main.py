@@ -16,7 +16,7 @@ import random
 import numpy as np
 
 from utils import get_dataset, adjust_learning_rate
-from options.single_base_options import args_parser
+from opt.single_base_options import args_parser
 from update import test_inference
 from models import MLP, CNNMnist, CNNFashion_Mnist, CNNCifar
 import configs.config as cf

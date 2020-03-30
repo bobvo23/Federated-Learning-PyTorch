@@ -17,7 +17,7 @@ import torch
 from tensorboardX import SummaryWriter
 import torchvision.models as models
 
-from options.fed_base_options import args_parser
+from opt.fed_base_options import args_parser
 from update import LocalUpdate, test_inference
 from models import MLP, CNNMnist, CNNFashion_Mnist, CNNCifar
 from utils import get_dataset, average_weights, exp_details
