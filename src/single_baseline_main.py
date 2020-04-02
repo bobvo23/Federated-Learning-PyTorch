@@ -63,7 +63,8 @@ def main():
             global_model = CNNCifar(args=args)
         elif args.dataset == 'cub200':
             if args.net_type == 'resnet':
-                global_model = models.resnet50(pretrained=True)
+                #global_model = models.resnet50(pretrained=True)
+                global_model = models.resnet18(pretrained=True)
                 global_model.fc = torch.nn.Linear(global_model.fc.in_features, cf.num_classes[args.dataset])
     elif args.model == 'mlp':
         # Multi-layer preceptron

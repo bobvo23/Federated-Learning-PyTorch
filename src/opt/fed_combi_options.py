@@ -74,7 +74,7 @@ def args_parser():
                         help='Decrease learning rate at these epochs.')
 
     #combinatorial options
-    parser.add_argument('--num-partitionings', default=100, type=int, metavar='N',
+    parser.add_argument('--num-partitionings', default=10, type=int, metavar='N',
                         help='number of partitionings')
     parser.add_argument('--num-partitions', default=2, type=int, metavar='N',
                         help='number of partitions')

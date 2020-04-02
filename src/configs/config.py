@@ -40,7 +40,7 @@ imresize = {
 }
 
 momentum = {
-    'cifar10': 0.50,
+    'cifar10': 0.90,
     'cub200': 0.9,
 }
 
@@ -55,6 +55,6 @@ lr = {
 }
 
 weight_decay = {
-    'cifar10': 1e-4,
+    'cifar10': 5e-4,
     'cub200': 5e-4
 }

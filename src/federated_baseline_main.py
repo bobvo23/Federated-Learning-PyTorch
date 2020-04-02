@@ -49,7 +49,8 @@ def main():
     start_time = time.time()
 
     # define paths
-    model_path = 'results/%s/%s/iid_%d/%s/seed_%d' % (args.dataset, args.method, args.iid, args.net_type, args.seed)
+    model_path = 'results/%s/%s/iid_%d/%s/seed_%d' % (args.dataset, args.method, args.iid if args.hard == 0 else -1,
+                                                      args.net_type, args.seed)
     if not os.path.isdir(model_path):
         mkdir_p(model_path)
     if not os.path.isdir(os.path.join(model_path, 'logs')):
@@ -82,9 +83,11 @@ def main():
         elif args.dataset == 'cifar10':
             global_model = CNNCifar(args=args)
             #global_model = models.resnet18(pretrained=True)
+            global_model.fc3 = torch.nn.Linear(global_model.fc3.in_features, cf.num_classes[args.dataset])
         elif args.dataset == 'cub200':
             if args.net_type == 'resnet':
-                global_model = models.resnet50(pretrained=True)
+                #global_model = models.resnet50(pretrained=True)
+                global_model = models.resnet18(pretrained=True)
                 global_model.fc = torch.nn.Linear(global_model.fc.in_features, cf.num_classes[args.dataset])
 
     elif args.model == 'mlp':

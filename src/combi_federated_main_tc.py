@@ -46,9 +46,10 @@ if use_cuda:
     cudnn.benchmark = True
     cudnn.deterministic = False
 
-args.partitionings_path = '../data/%s_partitions/part_%d_kmeans.pth.tar' % \
-                          (args.dataset, args.num_partitions)
-
+# args.partitionings_path = '../data/%s_fed_partitions/%s/iid_%d/part_%d_kmeans.pth.tar' % \
+#                           (args.dataset, args.net_type, args.iid, args.num_partitions)
+args.partitionings_path = '../data/%s_fed_partitions/%s/iid_%d/part_%d_kmeans.pth.tar' % \
+                           (args.dataset, args.net_type, args.iid, args.num_partitions)
 #args.lr = cf.lr[args.dataset]
 args.local_bs = cf.train_batch[args.dataset]
 args.wd = cf.weight_decay[args.dataset]
@@ -60,7 +61,8 @@ def main():
     start_time = time.time()
 
     # define paths
-    model_path = 'results/%s/%s/iid_%d/%s/seed_%d' % (args.dataset, args.method, args.iid, args.net_type, args.seed)
+    model_path = 'results/%s/%s/iid_%d/%s/seed_%d' % (args.dataset, args.method, args.iid if args.hard == 0 else -1,
+                                                      args.net_type, args.seed)
     if not os.path.isdir(model_path):
         mkdir_p(model_path)
     if not os.path.isdir(os.path.join(model_path, 'logs')):
@@ -88,7 +90,8 @@ def main():
             #global_model = CNNCifar_combi(args=args)
         elif args.dataset == 'cub200':
             if args.net_type == 'resnet':
-                _model = models.resnet50(pretrained=True)
+                #_model = models.resnet50(pretrained=True)
+                _model = models.resnet18(pretrained=True)
                 feat_dim = _model.fc.in_features
                 _model.fc = torch.nn.Sequential()
 
