@@ -78,6 +78,7 @@ def main():
         # Convolutional neural netork
         if args.dataset == 'mnist':
             global_model = CNNMnist(args=args)
+            global_model.fc2 = torch.nn.Linear(global_model.fc2.in_features, cf.num_classes[args.dataset])
         elif args.dataset == 'fmnist':
             global_model = CNNFashion_Mnist(args=args)
         elif args.dataset == 'cifar10':

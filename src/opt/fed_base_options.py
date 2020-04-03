@@ -10,7 +10,7 @@ def args_parser():
     parser = argparse.ArgumentParser()
 
     # federated arguments (Notation for the arguments followed from paper)
-    parser.add_argument('--epochs', type=int, default=500,
+    parser.add_argument('--epochs', type=int, default=1000,
                         help="number of rounds of training")
     parser.add_argument('--target-acc', type=float, default=85.00,
                         help='learning rate')

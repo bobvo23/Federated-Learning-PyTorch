@@ -23,6 +23,7 @@ num_classes = {
     'car196': 196,
     'inshop': 2173,
     'sop': 5036,
+    'mnist':10
 }
 
 imsize = {
@@ -42,19 +43,23 @@ imresize = {
 momentum = {
     'cifar10': 0.90,
     'cub200': 0.9,
+    'mnist': 0.9
 }
 
 train_batch = {
+    'mnist': 50,
     'cifar10': 50,
     'cub200': 16
 }
 
 lr = {
+    'mnist':0.01,
     'cifar10': 0.1,
     'cub200': 0.01
 }
 
 weight_decay = {
+    'mnist': 5e-4,
     'cifar10': 5e-4,
     'cub200': 5e-4
 }

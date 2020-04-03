@@ -78,7 +78,11 @@ def main():
     if args.model == 'cnn':
         # Convolutional neural netork
         if args.dataset == 'mnist':
-            global_model = CNNMnist(args=args)
+            #global_model = CNNMnist(args=args)
+            _model = CNNMnist(args=args)
+            feat_dim = _model.fc2.in_features
+            _model.fc2 = torch.nn.Sequential()
+
         elif args.dataset == 'fmnist':
             global_model = CNNFashion_Mnist(args=args)
         elif args.dataset == 'cifar10':
@@ -108,8 +112,8 @@ def main():
 
     # Set the model to train and send it to device.
     assert os.path.isfile(args.partitionings_path), 'Error: no partitionings found!'
-    partitionings = torch.load(args.partitionings_path)[args.seed * args.num_partitionings + 20
-                                                        :(args.seed+1)*args.num_partitionings + 20].t()
+    partitionings = torch.load(args.partitionings_path)[args.seed * args.num_partitionings
+                                                        :(args.seed+1)*args.num_partitionings].t()
 
     global_model = CNNComb(args=args, fe=_model, feat_dim=feat_dim, partitionings=partitionings)
     print('    Total params: %.2fM' % (sum(p.numel() for p in global_model.parameters()) / 1000000.0))
