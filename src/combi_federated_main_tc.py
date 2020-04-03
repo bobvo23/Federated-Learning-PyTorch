@@ -94,8 +94,8 @@ def main():
             #global_model = CNNCifar_combi(args=args)
         elif args.dataset == 'cub200':
             if args.net_type == 'resnet':
-                #_model = models.resnet50(pretrained=True)
-                _model = models.resnet18(pretrained=True)
+                _model = models.resnet50(pretrained=True)
+                #_model = models.resnet18(pretrained=True)
                 feat_dim = _model.fc.in_features
                 _model.fc = torch.nn.Sequential()
 

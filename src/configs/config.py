@@ -47,7 +47,7 @@ momentum = {
 }
 
 train_batch = {
-    'mnist': 50,
+    'mnist': 10,
     'cifar10': 50,
     'cub200': 16
 }
