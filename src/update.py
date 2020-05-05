@@ -12,6 +12,7 @@ from utils import adjust_learning_rate
 
 class DatasetSplit(Dataset):
     """An abstract Dataset class wrapped around Pytorch Dataset class.
+    Splitting a subset of the dataset based on the index of the user
     """
 
     def __init__(self, dataset, idxs):
@@ -34,6 +35,8 @@ class LocalUpdate(object):
         self.trainloader, self.validloader, self.testloader = self.train_val_test(
             dataset, list(idxs))
         self.device = 'cuda' if args.gpu else 'cpu'
+        #debug
+        print("Local device: ", self.device)
         # Default criterion set to NLL loss function
         self.criterion = nn.CrossEntropyLoss().to(self.device)
 
@@ -45,8 +48,8 @@ class LocalUpdate(object):
         and user indexes.
         """
         # split indexes for train, validation, and test (80, 10, 10)
-        #idxs_train = idxs[:int(0.8*len(idxs))]
-        idxs_train = idxs[:]
+        idxs_train = idxs[:int(0.8*len(idxs))]
+        #idxs_train = idxs[:]
         idxs_val = idxs[int(0.8*len(idxs)):int(0.9*len(idxs))]
         idxs_test = idxs[int(0.9*len(idxs)):]
 

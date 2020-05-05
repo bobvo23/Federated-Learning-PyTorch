@@ -85,6 +85,7 @@ def main():
     train_dataset, test_dataset, user_groups = get_dataset(args)
 
     # BUILD MODEL
+    # Construct major model and detail model based on dataset
     if args.model == 'cnn':
         # Convolutional neural netork
         if args.dataset == 'mnist':
@@ -107,6 +108,7 @@ def main():
         img_size = train_dataset[0][0].shape
         len_in = 1
         for x in img_size:
+            # multiply all dimentions of the input image
             len_in *= x
             global_model = MLP(dim_in=len_in, dim_hidden=64,
                                dim_out=args.num_classes)
@@ -115,6 +117,7 @@ def main():
 
     # Set the model to train and send it to device.
     global_model.to(device)
+    #Set model to train mode
     global_model.train()
     print(global_model)
     wandb.watch(global_model)
@@ -137,10 +140,19 @@ def main():
         print(f'\n | Global Training Round : {epoch+1} |\n')
 
         global_model.train()
+        # m is the number of user in a round
+        # m = C*N
+        # args.frac: C fraction of totaluser that participate in a round
+        # args.num_user N number of total users
+
+        #calculate numer of participants per round    
         m = max(int(args.frac * args.num_users), 1)
+        
+        #choose random m users from N users
+        #replace = False !!!!
         idxs_users = np.random.choice(range(args.num_users), m, replace=False)
 
-        # adjest learning rate per global round
+        # adjust learning rate per global round, learning rate decay 
         if epoch != 0:
             # if args.dataset == 'cub200':
             #     if epoch in args.schedule:

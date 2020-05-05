@@ -52,7 +52,7 @@ def mnist_noniid(dataset, num_users):
                 (dict_users[i], idxs[rand*num_imgs:(rand+1)*num_imgs]), axis=0)
     return dict_users
 
-
+#setting user groups for non-iid mnist
 def mnist_noniid_unequal(dataset, num_users):
     """
     Sample non-I.I.D client data from MNIST dataset s.t clients
