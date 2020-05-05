@@ -14,7 +14,8 @@ import torch.backends.cudnn as cudnn
 import errno
 
 import torch
-from tensorboardX import SummaryWriter
+#switched to a simple pytorch logger
+#from tensorboardX import SummaryWriter
 import torchvision.models as models
 
 from opt.fed_base_options import args_parser
@@ -24,20 +25,27 @@ from utils import get_dataset, average_weights, exp_details
 from configs import config as cf
 from logger import Logger
 
+#Initialize WANDB, get args from inputs
 args = args_parser()
 wandb.init(project='federated_combinatorial')
 
+#Set up GPU for torch
+#Set up GPU device for torch, typically set up device '0'
 
-os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
 use_cuda = torch.cuda.is_available()
-device = 'cuda' if args.gpu else 'cpu'
-
+if args.gpu:
+    device = 'cuda' 
+    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+else: 
+    device='cpu'
+print("Runnig device: " + device)
+#Initialize random seeds
 random.seed(args.seed)
 torch.manual_seed(args.seed)
 torch.cuda.manual_seed_all(args.seed)
 np.random.seed(args.seed)
 
-# Use CUDA
+# Use CUDA if available, make sure that the run is reproduceable and derterministic
 if use_cuda:
     torch.cuda.manual_seed_all(args.seed)
     cudnn.benchmark = False
@@ -48,7 +56,7 @@ if use_cuda:
 def main():
     start_time = time.time()
 
-    # define paths
+    # define paths to save logs and results
     model_path = 'results/%s/%s/iid_%d/%s/seed_%d' % (args.dataset, args.method, args.iid if args.hard == 0 else -1,
                                                       args.net_type, args.seed)
     if not os.path.isdir(model_path):
@@ -59,18 +67,21 @@ def main():
     # Open logger
     logger_path = os.path.join(model_path, 'log.txt')
     logger = Logger(logger_path)
+    #Set list of params to track
     logger.set_names(['Learning Rate', 'Train Loss', 'Test Acc.'])
 
     #args.lr = cf.lr[args.dataset]
+    #Retrive confige params for the chosen dataset
     args.local_bs = cf.train_batch[args.dataset]
     args.wd = cf.weight_decay[args.dataset]
     args.momentum = cf.momentum[args.dataset]
 
     wandb.config.update(args, allow_val_change=True)
-
+    
+    #print experiments details 
     exp_details(args)
 
-    # load dataset and user groups
+    # load dataset and user groups based on args
     train_dataset, test_dataset, user_groups = get_dataset(args)
 
     # BUILD MODEL
