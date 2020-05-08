@@ -3,26 +3,27 @@
 # Python version: 3.6
 
 from torch import nn
-from combclassifier import CombinatorialClassifier
 import torch.nn.functional as F
 import configs.config as cf
 
 
 class MLP(nn.Module):
+    #Modeling after the FedAvg Model to compare the performance
+    #2 hidden layers with 200 hidden units each
     def __init__(self, dim_in, dim_hidden, dim_out):
         super(MLP, self).__init__()
         self.layer_input = nn.Linear(dim_in, dim_hidden)
         self.relu1 = nn.ReLU()
-        self.dropout = nn.Dropout()
-        self.layer_hidden = nn.Linear(dim_hidden, dim_out)
+        #self.dropout = nn.Dropout()
+        self.layer_hidden = nn.Linear(dim_hidden, dim_hidden)
         self.relu2 = nn.ReLU()
-        self.layer_hidden2 = nn.Linear(dim_out, dim_out)
-        self.softmax = nn.Softmax(dim=1)
+        self.layer_hidden2 = nn.Linear(dim_hidden, dim_out)
+        #self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
         x = x.view(-1, x.shape[1]*x.shape[-2]*x.shape[-1])
         x = self.layer_input(x)
-        x = self.dropout(x)
+        #x = self.dropout(x)
         x = self.relu1(x)
         x = self.layer_hidden(x)
         x = self.relu2(x)

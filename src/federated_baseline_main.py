@@ -27,8 +27,8 @@ from logger import Logger
 
 #Initialize WANDB, get args from inputs
 args = args_parser()
-wandb.init(project='federated_baseline')
-
+#wandb.init(project='federated AVG', reinit=True)
+wandb.init(project='fedAVG')
 #Set up GPU for torch
 #Set up GPU device for torch, typically set up device '0'
 
@@ -72,7 +72,7 @@ def main():
 
     #args.lr = cf.lr[args.dataset]
     #Retrive confige params for the chosen dataset
-    args.local_bs = cf.train_batch[args.dataset]
+    #args.local_bs = cf.train_batch[args.dataset]
     args.wd = cf.weight_decay[args.dataset]
     args.momentum = cf.momentum[args.dataset]
 
@@ -111,7 +111,7 @@ def main():
             # multiply all dimentions of the input image
             len_in *= x
             #TODO: Move this global model out of the for loop
-            global_model = MLP(dim_in=len_in, dim_hidden=64,
+            global_model = MLP(dim_in=len_in, dim_hidden=200,
                                dim_out=args.num_classes)
     else:
         exit('Error: unrecognized model')
@@ -134,6 +134,7 @@ def main():
     print_every = 1
     val_loss_pre, counter = 0, 0
     best_acc = 0
+    global_comm_rounds =0
 
 
     for epoch in tqdm(range(args.epochs)):
@@ -177,6 +178,9 @@ def main():
         # update global weights
         global_weights = average_weights(local_weights)
 
+        # update communication rounds
+        global_comm_rounds += len(local_weights)  
+          
         # update global weights
         global_model.load_state_dict(global_weights)
 
@@ -215,13 +219,14 @@ def main():
             print(f' \nAvg Training Stats after {epoch+1} global rounds:')
             print(f'Training Loss : {np.mean(np.array(train_loss))}')
             #print('Train Accuracy: {:.2f}% \n'.format(100*train_accuracy[-1]))
-            print('Test Accuracy: {:.2f}%, Best Test Acc: {:.2f}% \n'.format(test_acc, best_acc))
+            print('Test Accuracy: {:.2f}%, Best Test Acc: {:.2f}%, Total Comm. Rounds: {:.0f}% \n'.format(test_acc, best_acc,global_comm_rounds))
 
         wandb.log({
             "Train Loss": loss_avg,
             "Test Acc": test_acc,
             "lr": args.lr,
-            'Best_Acc': best_acc
+            'Best_Acc': best_acc,
+            "Global Comm. Rounds":global_comm_rounds
         })
 
         if best_acc >= args.target_acc:
