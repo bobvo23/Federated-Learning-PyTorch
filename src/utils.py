@@ -57,7 +57,8 @@ def get_dataset(args):
             data_dir = '../data/mnist/'
         else:
             data_dir = '../data/fmnist/'
-
+        #TODO:1 Accommodate FMNIST case (mean, var). This is the mean, var of MNIST; Fashion MNIST may have different set of params/
+        # shall we use the  params from opt instead of setting hard params?
         apply_transform = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize((0.1307,), (0.3081,))])

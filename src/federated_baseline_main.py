@@ -27,7 +27,7 @@ from logger import Logger
 
 #Initialize WANDB, get args from inputs
 args = args_parser()
-wandb.init(project='federated_combinatorial')
+wandb.init(project='federated_baseline')
 
 #Set up GPU for torch
 #Set up GPU device for torch, typically set up device '0'
@@ -38,7 +38,7 @@ if args.gpu:
     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
 else: 
     device='cpu'
-print("Runnig device: " + device)
+print("Running device: " + device)
 #Initialize random seeds
 random.seed(args.seed)
 torch.manual_seed(args.seed)
@@ -110,6 +110,7 @@ def main():
         for x in img_size:
             # multiply all dimentions of the input image
             len_in *= x
+            #TODO: Move this global model out of the for loop
             global_model = MLP(dim_in=len_in, dim_hidden=64,
                                dim_out=args.num_classes)
     else:
@@ -150,6 +151,7 @@ def main():
         
         #choose random m users from N users
         #replace = False !!!!
+        #S = idxs_users
         idxs_users = np.random.choice(range(args.num_users), m, replace=False)
 
         # adjust learning rate per global round, learning rate decay 
@@ -159,8 +161,12 @@ def main():
             #         args.lr *= 0.1
             # else:
             args.lr *= args.gamma
-
-        for idx in idxs_users:
+        #for every user in the list of seleted user
+        # 1/ extract the subdataset that related to that user (train,test,vali loader)
+        #Set up criterios and logger
+        for k,idx in enumerate(idxs_users):
+            if args.verbose:
+                print('Update for user ',k,' ID: ',idxs_users[k] )
             local_model = LocalUpdate(args=args, dataset=train_dataset,
                                       idxs=user_groups[idx], logger=logger)
             w, loss = local_model.update_weights(

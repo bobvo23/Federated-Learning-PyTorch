@@ -5,6 +5,7 @@ mean = {
     'car196': (0.4460, 0.4311, 0.4319),
     'inshop': (0.7575, 0.7162, 0.7072),
     'sop': (0.5461, 0.4972, 0.4565),
+    'fmnist': (0.5, 0.5, 0.5)
 }
 
 std = {
@@ -14,6 +15,7 @@ std = {
     'car196': (0.2903, 0.2884, 0.2956),
     'inshop': (0.2810, 0.2955, 0.2961),
     'sop': (0.2867, 0.2894, 0.2994),
+    'fmnist': (0.5,0.5,0.5)
 }
 
 num_classes = {
@@ -23,7 +25,8 @@ num_classes = {
     'car196': 196,
     'inshop': 2173,
     'sop': 5036,
-    'mnist':10
+    'mnist':10,
+    'fmnist':10
 }
 
 imsize = {
@@ -43,17 +46,22 @@ imresize = {
 momentum = {
     'cifar10': 0.90,
     'cub200': 0.9,
-    'mnist': 0.9
+    'mnist': 0.9,
+    'fmnist': 0.9
+
 }
 
 train_batch = {
     'mnist': 10,
+    'fmnist':10,
     'cifar10': 50,
     'cub200': 16
+
 }
 
 lr = {
     'mnist':0.01,
+    'fmnist':0.01,
     'cifar10': 0.1,
     'cub200': 0.01
 }
@@ -61,5 +69,6 @@ lr = {
 weight_decay = {
     'mnist': 5e-4,
     'cifar10': 5e-4,
-    'cub200': 5e-4
+    'cub200': 5e-4,
+    'fmnist': 5e-4
 }

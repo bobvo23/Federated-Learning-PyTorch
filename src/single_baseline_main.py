@@ -27,13 +27,18 @@ args = args_parser()
 
 
 
-wandb.init(project='federated_combinatorial')
+wandb.init(project='federated_basedline')
+
 args.wd = cf.weight_decay[args.dataset]
 wandb.config.update(args, allow_val_change=True)
 
-os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
 use_cuda = torch.cuda.is_available()
-device = 'cuda' if args.gpu else 'cpu'
+if args.gpu:
+    device = 'cuda' 
+    os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+else: 
+    device='cpu'
+print("Running device: " + device)
 
 random.seed(args.seed)
 torch.manual_seed(args.seed)
@@ -68,8 +73,11 @@ def main():
                 global_model.fc = torch.nn.Linear(global_model.fc.in_features, cf.num_classes[args.dataset])
     elif args.model == 'mlp':
         # Multi-layer preceptron
+        #img_size is torch.Size([1, 28, 28])
         img_size = train_dataset[0][0].shape
         len_in = 1
+    #toclarify: why do we have to call the MLP code 3 times?
+    #TODO: try to move global_model out of the bracket  
         for x in img_size:
             len_in *= x
             global_model = MLP(dim_in=len_in, dim_hidden=64,
@@ -91,7 +99,7 @@ def main():
     elif args.optimizer == 'adam':
         optimizer = torch.optim.Adam(global_model.parameters(), lr=args.lr,
                                      weight_decay=1e-4)
-
+#batch_size = 
     trainloader = DataLoader(train_dataset, batch_size=int(args.local_bs * (args.num_users * args.frac)), shuffle=True, num_workers=args.workers,
                              pin_memory=use_cuda, drop_last=True)
 
@@ -121,8 +129,8 @@ def main():
 
             #if batch_idx % 50 == 0:
             print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}\tLr: {:.4f}'.format(
-                    epoch+1, batch_idx * len(images), len(trainloader.dataset),
-                    100. * batch_idx / len(trainloader), loss.item(), args.lr))
+                    epoch+1, (batch_idx+1) * len(images), len(trainloader.dataset),
+                    100. * (batch_idx+1) / len(trainloader), loss.item(), args.lr))
             batch_loss.append(loss.item())
 
             wandb.log({'Train Loss': loss.item()})

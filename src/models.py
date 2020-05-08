@@ -16,6 +16,7 @@ class MLP(nn.Module):
         self.dropout = nn.Dropout()
         self.layer_hidden = nn.Linear(dim_hidden, dim_out)
         self.relu2 = nn.ReLU()
+        self.layer_hidden2 = nn.Linear(dim_out, dim_out)
         self.softmax = nn.Softmax(dim=1)
 
     def forward(self, x):
@@ -24,9 +25,9 @@ class MLP(nn.Module):
         x = self.dropout(x)
         x = self.relu1(x)
         x = self.layer_hidden(x)
-
-        #return self.softmax(x)
-        return F.log_softmax(x)
+        x = self.relu2(x)
+        x = self.layer_hidden2(x)
+        return x
 
 
 class CNNMnist(nn.Module):

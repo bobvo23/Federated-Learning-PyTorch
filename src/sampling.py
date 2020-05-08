@@ -10,15 +10,21 @@ from torchvision import datasets, transforms
 def mnist_iid(dataset, num_users):
     """
     Sample I.I.D. client data from MNIST dataset
-    :param dataset:
-    :param num_users:
+    :param dataset: the global mnist dataset (torchvision dataset object)
+    :param num_users: number of samples per user
+    :param all_idxs: all index of samples (initially 60000)
     :return: dict of image index
     """
+    #Equally devide the set of Mnist 60000 to all users (regardless train/test)
     num_items = int(len(dataset)/num_users)
     dict_users, all_idxs = {}, [i for i in range(len(dataset))]
+    #assign data samples to the set of all users
     for i in range(num_users):
+        #the set data type removes duplicate
+        #Take random num_items for the user i from remaining samples
         dict_users[i] = set(np.random.choice(all_idxs, num_items,
                                              replace=False))
+        #remove those distributed samples from the pool all_idxs                                                    
         all_idxs = list(set(all_idxs) - dict_users[i])
     return dict_users
 

@@ -69,7 +69,7 @@ def args_parser():
                         help='rounds of early stopping')
     parser.add_argument('--verbose', type=int, default=1, help='verbose')
     parser.add_argument('--seed', type=int, default=1, help='random seed')
-    parser.add_argument('--workers', type=int, default=8, help='num of workers')
+    parser.add_argument('--workers', type=int, default=4, help='num of workers')
     parser.add_argument('--schedule', type=int, nargs='+', default=[20, 30],
                         help='Decrease learning rate at these epochs.')
 
