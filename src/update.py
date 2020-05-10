@@ -271,7 +271,7 @@ def test_inference(args, model, test_dataset, combi=False):
         # Set optimizer for the local updates
         if self.args.optimizer == 'sgd':
             optimizer = torch.optim.SGD(model.parameters(), lr=self.args.lr,
-                                        momentum=cf.momentum[self.args.dataset], weight_decay=cf.weight_decay[self.args.dataset])
+                                        momentum=args.momentum, weight_decay=cf.weight_decay[self.args.dataset])
         elif self.args.optimizer == 'adam':
             optimizer = torch.optim.Adam(model.parameters(), lr=self.args.lr,
                                          weight_decay=1e-4)

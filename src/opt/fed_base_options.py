@@ -26,8 +26,8 @@ def args_parser():
                         help='learning rate')
     parser.add_argument('--gamma', type=float, default=0.99,
                         help='learning rate decay')
-    parser.add_argument('--momentum', type=float, default=0.5,
-                        help='SGD momentum (default: 0.5)')
+    parser.add_argument('--momentum', type=float, default=0.95,
+                        help='SGD momentum (default: 0.9)')
 
 
     # model arguments

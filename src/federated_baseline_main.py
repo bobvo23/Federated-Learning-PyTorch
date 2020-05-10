@@ -28,7 +28,7 @@ from logger import Logger
 #Initialize WANDB, get args from inputs
 args = args_parser()
 #wandb.init(project='federated AVG', reinit=True)
-wandb.init(project='fedAVG')
+wandb.init(project='fedAVG_IOT')
 #Set up GPU for torch
 #Set up GPU device for torch, typically set up device '0'
 
@@ -74,7 +74,7 @@ def main():
     #Retrive confige params for the chosen dataset
     #args.local_bs = cf.train_batch[args.dataset]
     args.wd = cf.weight_decay[args.dataset]
-    args.momentum = cf.momentum[args.dataset]
+    #args.momentum = cf.momentum[args.dataset]
 
     wandb.config.update(args, allow_val_change=True)
     
